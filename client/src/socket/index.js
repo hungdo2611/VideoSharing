@@ -1,23 +1,30 @@
 import React, { useState, useEffect, useRef } from "react";
 import socketIOClient from "socket.io-client";
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
-const host = "66.42.59.88:6969:6969";
+const host = "66.42.59.88:6969";
 
 function Socket() {
-  const socketRef = useRef();
+    const socketRef = useRef();
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("connect socket")
-    socketRef.current = socketIOClient(host);
-    return () => {
-        socketRef.current.disconnect();
-      };
-  }, []);
+    useEffect(() => {
+        console.log("connect socket")
+        socketRef.current = socketIOClient(host);
+        socketRef.current.on('newShare', data => {
+            console.log("newShare", data)
+            toast.info(`${data?.data?.user?.email} just shared a new video`, { onOpen: () => navigate('/'), closeOnClick: true })
+        })
+        return () => {
+            socketRef.current.disconnect();
+        };
+    }, []);
 
 
-  return (
-      <></>
-  );
+    return (
+        <></>
+    );
 }
 
 export default Socket;
