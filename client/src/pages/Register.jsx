@@ -18,6 +18,7 @@ import { registerAPI } from "../apis/authenAPI";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../redux/action";
+import { toast } from "react-toastify";
 
 FormPage.propTypes = {};
 
@@ -58,6 +59,8 @@ function FormPage(props) {
             localStorage.setItem("user", JSON.stringify(req?.data));
             navigate("/");
             dispatch(updateUser(req?.data));
+        }else{
+            toast.error("Somethings wrong pls try again")
         }
     };
 

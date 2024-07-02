@@ -7,14 +7,19 @@ import { useState } from "react";
 import YouTube from "react-youtube";
 import useWindowDimensions from "../ultis";
 import { ToastContainer, toast } from 'react-toastify';
+import { ShareVideoAPI } from "../apis/videoAPI";
+import { useNavigate } from "react-router-dom";
 
 const ShareVideo = () => {
+    const navigate = useNavigate();
+
     const [video, setVideo] = useState('');
+    const [content, setContent] = useState('');
+    const [url, setURL] = useState('');
     const dimension = useWindowDimensions();
-    console.log("dimension", dimension)
     const onPaste = (e) => {
         const url = e.clipboardData.getData('Text');
-
+        setURL(url);
         const idVideo = getIdVideo(url);
         console.log("url", idVideo)
 
@@ -31,8 +36,26 @@ const ShareVideo = () => {
             autoplay: 0,
         },
     };
-    const onSharevideo = () => {
-        toast("Wow so easy!", { onOpen: () => console.log('hello'), closeOnClick: true });
+    const onSharevideo = async () => {
+        let title = await getVideoTitle(url);
+        let body = {
+            title: title.title,
+            content,
+            link: url
+        }
+        let request = await ShareVideoAPI(body);
+        if (request && !request.err) {
+            toast("Share success", { onOpen: () => navigate('/'), closeOnClick: true });
+        } else {
+            toast.error("Somethings wrong pls try again")
+        }
+    }
+    const getVideoTitle = async (url) => {
+        let req = await fetch(`https://noembed.com/embed?dataType=json&url=${url}`);
+        return req.json();
+    }
+    const handleChange = (event) => {
+        setContent(event.target.value);
     }
 
     return <>
@@ -44,7 +67,7 @@ const ShareVideo = () => {
             flexDirection={"column"}
             p={10}>
             <Input onPaste={onPaste} placeholder="Enter url Youtube video" />
-            <Textarea my={5} placeholder="Description" />
+            <Textarea onChange={handleChange} my={5} placeholder="Description" />
             <Button isDisabled={!video} onClick={onSharevideo} my={5}>
                 Share Video
             </Button>

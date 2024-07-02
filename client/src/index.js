@@ -8,7 +8,7 @@ import store from './redux/store';
 import { ChakraProvider } from "@chakra-ui/react"
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-
+import Socket from './socket'
 
 import { Home, Login, Register, PageNotFound, ShareVideo } from "./pages";
 
@@ -30,5 +30,6 @@ root.render(
       </Provider>
     </ChakraProvider>
     <ToastContainer />
+    <Socket />
   </BrowserRouter>
 );

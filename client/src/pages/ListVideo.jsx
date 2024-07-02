@@ -1,23 +1,11 @@
 
 import { Box, Text } from '@chakra-ui/react';
-import YouTube from 'react-youtube';
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useCheckMobileScreen } from '../components/Navbar';
 import { useEffect, useState } from 'react';
 import { getListVideoAPI } from '../apis/videoAPI';
-import ytdl from 'ytdl-core'
-const YoutubeEmbed = ({ embedId }) => (
-    <div className="video-responsive">
-        <iframe
-            width="853"
-            height="480"
-            src={`https://www.youtube.com/embed/${embedId}`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            title="Embedded youtube"
-        />
-    </div>
-);
+import { VideoMobileComponent, VideoDestopComponent } from '../components/VideoComponent'
+
 export const getIdVideo = (url) => {
     var regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
     var match = url.match(regExp);
@@ -25,18 +13,7 @@ export const getIdVideo = (url) => {
 }
 const ListVideo = () => {
     const [videos, setVideos] = useState([]);
-    const opts = {
 
-        playerVars: {
-            // https://developers.google.com/youtube/player_parameters
-            autoplay: 0,
-        },
-    };
-
-    const onReady = (event) => {
-        // access to player in all event handlers via event.target
-        event.target.pauseVideo();
-    };
     const getListVideo = async () => {
         let req = await getListVideoAPI(1, 20);
         if (req && !req?.err) {
@@ -45,26 +22,31 @@ const ListVideo = () => {
     }
     useEffect(() => {
         getListVideo();
-        ytdl.getInfo('https://www.youtube.com/watch?v=YQHsXMglC9A').then(info => {
-            console.log(info.videoDetails.title);
-        })
+
     }, []);
     let ismobile = useCheckMobileScreen();
 
 
     const renderVideo = (vid) => {
         if (ismobile) {
-            return
+
+            return <VideoMobileComponent
+                key={vid?._id}
+                link={vid?.link}
+                title={vid?.title}
+                content={vid?.content}
+                email={vid?.user_id?.email}
+                time={vid?.time} />
         }
-        return <Box p={10} display={"flex"} flexDirection={"row"} alignItems={"center"}>
-            <YouTube videoId={getIdVideo(vid?.link)} opts={opts} onReady={onReady} />
-            <Box>
-                <Text>Description: {vid?.content}</Text>
-                <Text>Author: {vid?.user_id.email}</Text>
-            </Box>
+        return <VideoDestopComponent
+            link={vid?.link}
+            key={vid?._id}
+            title={vid?.title}
+            content={vid?.content}
+            email={vid?.user_id?.email}
+            time={vid?.time} />
 
 
-        </Box>
     }
 
     return <Box flex={1}>

@@ -18,6 +18,7 @@ import { LoginAPI } from "../apis/authenAPI";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../redux/action";
+import { ToastContainer, toast } from 'react-toastify';
 
 FormPage.propTypes = {};
 
@@ -57,12 +58,15 @@ function FormPage(props) {
       localStorage.setItem("user", JSON.stringify(req?.data));
       navigate("/");
       dispatch(updateUser(req?.data));
+    } else {
+      toast.error(req?.data)
+
     }
   };
 
   return (
     <>
-      <Navbar hideRight={true}/>
+      <Navbar hideRight={true} />
       <Flex justify={"center"} direction={"column"} align={"center"}>
         <Heading>Login</Heading>
 

@@ -1,5 +1,5 @@
 import Axios from 'axios'
-// import { instanceData } from '../model'
+import { token } from '../redux/reducer/user'
 const _makeRequest = createRequest => async args => {
     const _headers = args.headers ? args.headers : {}
     const body = args.body ? args.body : {}
@@ -23,9 +23,10 @@ const _makeAuthRequest = createRequest => async args => {
     const requestHeaders = args.headers ? args.headers : {}
 
     // const token = instanceData.token;
+    console.log('token',token);
     let headers = {
         'Content-Type': 'application/json',
-        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
     }
 
     args = {
