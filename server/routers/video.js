@@ -1,8 +1,8 @@
 const express = require('express')
 const VideoShare = require('../models/videoshare')
-const { auth, authWithoutData } = require('../middleware/auth')
+const { auth, authWithoutData } = require('../middleware/auth');
 const mongoose = require('mongoose')
-
+const socket = require('../socket')
 const video_router = express.Router()
 
 
@@ -22,6 +22,7 @@ video_router.post('/sharevideo', auth, async (req, res) => {
         const video = new VideoShare(bodyrequest);
         await video.save();
         console.log("video", video);
+        socket.connection().emit("newShare", { data: { ...bodyrequest, user: req.user } });
 
         res.status(200).send({ data: video, err: false })
     } catch (error) {
@@ -39,7 +40,7 @@ video_router.get('/video', async (req, res) => {
             populate: { path: 'user_id', select: "email" },
             page: page_number, limit: page_size, sort: { $natural: -1 }
         });
-        console.log("video",video)
+        console.log("video", video)
 
         res.status(200).send({ data: video.docs, err: false })
     } catch (error) {
