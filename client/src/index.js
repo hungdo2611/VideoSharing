@@ -6,9 +6,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import { ChakraProvider } from "@chakra-ui/react"
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 
-import { Home, Login, Register, PageNotFound } from "./pages";
+import { Home, Login, Register, PageNotFound, ShareVideo } from "./pages";
 
 
 
@@ -19,6 +21,7 @@ root.render(
       <Provider store={store}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/share" element={<ShareVideo />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<PageNotFound />} />
@@ -26,5 +29,6 @@ root.render(
         </Routes>
       </Provider>
     </ChakraProvider>
+    <ToastContainer />
   </BrowserRouter>
 );
