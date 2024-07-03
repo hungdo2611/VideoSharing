@@ -55,7 +55,7 @@ const ListVideo = () => {
             style={{ overflowY: 'hidden' }}
             dataLength={videos.length}
             hasMore={true} next={() => { }}
-            loader={<h4>Loading...</h4>}
+            // loader={}
             endMessage={
                 <p style={{ textAlign: 'center' }}>
                     <b>Yay! You have seen it all</b>

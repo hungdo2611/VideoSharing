@@ -33,3 +33,4 @@ root.render(
     <Socket />
   </BrowserRouter>
 );
+export default root;

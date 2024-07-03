@@ -1,3 +1,4 @@
+
 import {
     Box,
     Button,
@@ -20,9 +21,9 @@ import { useDispatch } from "react-redux";
 import { updateUser } from "../redux/action";
 import { toast } from "react-toastify";
 
-FormPage.propTypes = {};
+RegisterPage.propTypes = {};
 
-function FormPage(props) {
+function RegisterPage(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -59,7 +60,7 @@ function FormPage(props) {
             localStorage.setItem("user", JSON.stringify(req?.data));
             navigate("/");
             dispatch(updateUser(req?.data));
-        }else{
+        } else {
             toast.error("Somethings wrong pls try again")
         }
     };
@@ -75,9 +76,9 @@ function FormPage(props) {
                         <Flex direction={"column"} gap={5}>
                             <FormControl isInvalid={errors.email}>
                                 <FormLabel htmlFor="email">Email</FormLabel>
-                                <Input placeholder="Email" {...register("email")} />
+                                <Input data-testid="email" placeholder="Email" {...register("email")} />
                                 {errors.email && (
-                                    <FormErrorMessage>
+                                    <FormErrorMessage data-testid="err-validate-email">
                                         {errors.email.message}
                                     </FormErrorMessage>
                                 )}
@@ -85,9 +86,9 @@ function FormPage(props) {
 
                             <FormControl isInvalid={errors.password}>
                                 <FormLabel htmlFor="password">Password</FormLabel>
-                                <Input type="password" placeholder="Password" {...register("password")} />
+                                <Input data-testid="password" type="password" placeholder="Password" {...register("password")} />
                                 {errors.password && (
-                                    <FormErrorMessage>
+                                    <FormErrorMessage data-testid="err-validate-password">
                                         {errors.password.message}
                                     </FormErrorMessage>
                                 )}
@@ -96,7 +97,7 @@ function FormPage(props) {
                                 Already has an account? <Link to="/login" className="text-decoration-underline text-info">Login</Link>
                             </Box>
                             <Box>
-                                <Button width={{ base: '100%', sm: '50%', md: '25%' }} type="submit">Register</Button>
+                                <Button data-testid="register-btn" width={{ base: '100%', sm: '50%', md: '25%' }} type="submit">Register</Button>
                             </Box>
                         </Flex>
                     </form>
@@ -106,4 +107,4 @@ function FormPage(props) {
     );
 }
 
-export default FormPage;
+export default RegisterPage;
