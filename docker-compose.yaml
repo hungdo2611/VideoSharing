@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  react-app:
+    image: react-app
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    stdin_open: true
+    ports: 
+      - "3000:3000"
+   
+  api-server:
+    image: api-server
+    ports:
+      - "5000:5000"
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    env_file: .env
+
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:3.6.19-xenial
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
+    driver: local
