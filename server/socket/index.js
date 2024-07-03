@@ -10,7 +10,7 @@ class Socket {
         console.log('connect sv')
         const io = require("socket.io")(server, {
             cors: {
-                origin: "*",
+                origin: '*',
             }
         });
         io.on("connection", (socket) => {

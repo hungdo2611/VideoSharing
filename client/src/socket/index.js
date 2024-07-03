@@ -3,7 +3,7 @@ import socketIOClient from "socket.io-client";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 
-const host = "66.42.59.88:6969";
+const host = "127.0.0.1:5000";
 
 function Socket() {
     const socketRef = useRef();

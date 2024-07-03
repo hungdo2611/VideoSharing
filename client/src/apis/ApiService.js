@@ -51,7 +51,7 @@ const _makeAuthRequest = createRequest => async args => {
 }
 
 export default (options = {}) => {
-    let BaseURL = 'http://66.42.59.88:6969/api'
+    let BaseURL = 'http://127.0.0.1:5000/api'
     // let BaseURL = 'http://localhost:3000/api'
 
     if (options.BaseURL)

@@ -16,11 +16,7 @@ socket.connect(server);
 
 
 
-app.use(cors({
-    origin: ['http://localhost:3000'],
-    credentials: true,
-
-}));
+app.use(cors());
 app.use(express.json())
 
 app.use('/api', customer_router);
@@ -29,7 +25,8 @@ app.use('/api', video_router);
 app.get("/", (req, res) => {
     res.send("Hello World");
 });
-server.listen(6969, () => {
-    console.log(`Server running on port 6969`)
+const port = process.env.PORT
+server.listen(port, () => {
+    console.log(`Server running on port ${port}`)
 })
 
